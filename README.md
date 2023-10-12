@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+To develop a user-friendly and efficient event ticket tracker that offers real-time notifications, fast search, event watchlist, and price detection, addressing the frustrations of event enthusiasts who has low budget and meeting their needs for convenience and information accessibility.
 
 ## User stories
 
