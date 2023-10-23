@@ -4,7 +4,7 @@ from pymongo import MongoClient
 import random
 import logging
 from datetime import datetime
-from bson import ObjectId 
+from bson import ObjectId
 from bson import json_util
 import json
 
@@ -56,7 +56,7 @@ def login_failed():
 def home():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
-    
+
     featured_events = events.find().limit(20)
 
 
@@ -66,19 +66,25 @@ def home():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
-      
-    search_results = []
+        return redirect(url_for("login"))
+
     query = ""
     if request.method == 'POST':
         query = request.form.get('query')
-        search_results = events.find({"event_name": {"$regex": query, "$options": 'i'}})  # Basic text search
+        if query:
+            search_results = events.find({"event_name": {"$regex": query, "$options": 'i'}})
+        else:
+            search_results = events.find()
+    else:
+        search_results = events.find()
+
     return render_template('search.html', events=search_results, query=query)
+
 
 @app.route('/watchlist')
 def watchlist():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
+        return redirect(url_for("login"))
 
     id = str(session.get("id"))
 
@@ -100,7 +106,7 @@ def watchlist():
 @app.route('/watchlist_edit', methods=['POST'])
 def watchlist_edit():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
+        return redirect(url_for("login"))
 
     id = session.get("id")
 
@@ -118,7 +124,7 @@ def watchlist_edit():
 @app.route('/delete', methods=['POST'])
 def delete():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
+        return redirect(url_for("login"))
     event_id = request.form.get('event_id')
     if event_id:
         users.update_one({"_id": ObjectId(session.get("id"))}, {"$pull": {"watchlist": ObjectId(event_id)}})
@@ -127,26 +133,26 @@ def delete():
         return "Error deleting from watchlist", 400
 
 @app.route('/delete_all', methods=['POST'])
-def delete_all():  
+def delete_all():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
+        return redirect(url_for("login"))
     users.update_one({"_id": ObjectId(session.get("id"))}, {"$set": {"watchlist": []}})
     return redirect(url_for('watchlist'))
 
 @app.route('/settings', methods=['GET'])
 def settings():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
+        return redirect(url_for("login"))
 
     return render_template('settings.html')
 
 @app.route('/settings_save', methods=['POST'])
 def settings_save():
     if not session.get("logged_in"):
-        return redirect(url_for("login")) 
-      
-    email = request.form.get('email')  
-    password = request.form.get('password') 
+        return redirect(url_for("login"))
+
+    email = request.form.get('email')
+    password = request.form.get('password')
     phone = request.form.get('phone')
     # TODO: update database
 
@@ -174,7 +180,7 @@ def add_to_watchlist():
     inventory_drop = request.form.get('inventory')
     restock_to = request.form.get('restock')
 
-    
+
     if event_id:
         if users.find_one({"_id": ObjectId(session.get("id")), "watchlist": ObjectId(event_id)}):
             return redirect(url_for('watchlist'))
@@ -188,7 +194,7 @@ def add_to_watchlist():
 def notification():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
-    
+
     id = session.get("id")
 
     messages = users.find_one({"_id": ObjectId(id)}).get("notifications")
