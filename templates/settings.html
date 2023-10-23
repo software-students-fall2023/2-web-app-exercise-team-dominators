@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Page</title>
+    <link rel="stylesheet" href="static/css/settings.css">
+</head>
+
+<body>
+    
+
+    <div class="settings-page">
+        <form action="/settings_save" method="post" class="settings-page">
+            <div class="option-input">
+                <label>Change Email</label>
+                <input type="email">
+            </div>
+            <div class="option-input">
+                <label>Change Password</label>
+                <input type="password">
+            </div>
+            <div class="option-input">
+                <label>Change Phone Number</label>
+                <input type="tel">
+            </div>
+            <div class="notification-settings">
+                <h3>Notification Settings</h3>
+                <label>Email: <input type="checkbox"></label>
+                <label>Phone: <input type="checkbox"></label>
+                <label>App: <input type="checkbox"></label>
+                <div>
+                    <label>Brief: <input type="radio" name="notification"></label>
+                    <label>Normal: <input type="radio" name="notification"></label>
+                    <label>Detailed: <input type="radio" name="notification"></label>
+                </div>
+            </div>
+            <div class="contact-us">
+                <label>Contact Us</label>
+                <textarea></textarea>
+            </div>
+            <button type="submit" class="option-button">Save Changes</button>
+        </form>
+        <form action="/logout" method="post">
+            <button type="submit" class="option-button">Log Out</button>
+        </form>
+        <div class="nav-bar">
+            <form action="/home" method="get">
+                <button class="nav-button">Home</button>
+            </form>
+            <form action="/search" method="get">
+                <button class="nav-button">Search</button>
+            </form>
+            <form action="/watchlist" method="get">
+                <button class="nav-button">Watch List</button>
+            </form>
+            <form action="/settings" method="get">
+                <button class="nav-button">Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+

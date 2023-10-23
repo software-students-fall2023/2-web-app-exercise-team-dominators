@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/event.css')}}">
+</head>
+<body>
+    <div class="event-container">
+        <button class="back-button">Back</button>
+    
+        <div class="event-image">
+            <img src="{{ url_for('static', filename='placeholder.png')}}" alt="Event Image" class="event-image">
+        </div>
+        
+        <h1>{{event.event_name}}</h1>
+        
+        <p>{{event.event_date}}</p>
+
+        <p>{{event.venue}}</p>
+
+        <p>{{event.description}}</p>
+        
+        <p>Price: {{event.price}}</p>
+        <p>Inventory: {{event.available_tickets}}</p>
+
+        <button class="buy-button">Buy on Ticketmaster</button>
+
+        <form action="/add_to_watchlist" method="post">
+            <div class="notification-settings">
+                <label>Notify when price drop below: <input type="number" name="price" value="100"></label>
+                <label>Notify when inventory drop below: <input type="number" name="inventory" value="100"></label>
+                <label>Notify when Item is restocked to: <input type="number" name="restock" value="2"></label>
+            </div>
+            <input type="hidden" name="event_id" value="{{event._id}}">
+            <button type="submit" class="watch-button">Add to Watch List</button>
+        </form>
+    </div>
+
+    <div class="navbar">
+        <form action="/home" method="get">
+            <button class="nav-button">Home</button>
+        </form>
+        <form action="/search" method="get">
+            <button class="nav-button">Search</button>
+        </form>
+        <form action="/watchlist" method="get">
+            <button class="nav-button">Watch List</button>
+        </form>
+        <form action="/settings" method="get">
+            <button class="nav-button">Settings</button>
+        </form>
+    </div>
+    <script>
+        document.querySelector('.back-button').addEventListener('click', function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
+

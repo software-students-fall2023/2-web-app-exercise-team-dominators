@@ -4,6 +4,9 @@ from pymongo import MongoClient
 import random
 import logging
 from datetime import datetime
+from bson import ObjectId 
+from bson import json_util
+import json
 
 
 app = Flask(__name__)
@@ -28,17 +31,28 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+
         user = users.find_one({"email": email, "password_hash": password})
+        # user = json.loads(json_util.dumps(userraw))
+
         if user:
             session["logged_in"] = True
+            session["id"] = str(user.get("_id"))
+            session["notifications"] = str(user.get("notifications"))
             return redirect(url_for("home"))
         else:
-            return "Invalid credentials, please try again."
+            return redirect(url_for("login_failed"))
 
     return render_template("login.html")
 
+@app.route("/login_failed", methods=["GET", "POST"])
+def login_failed():
+    return render_template("login_failed.html")
 
-@app.route('/home')
+#TODO: add signup page
+
+@app.route('/home', methods=["GET"])
+@app.route('/', methods=["GET"])
 def home():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
@@ -48,6 +62,147 @@ def home():
 
 
     return render_template("home.html", featured_events=featured_events)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+      
+    search_results = []
+    query = ""
+    if request.method == 'POST':
+        query = request.form.get('query')
+        search_results = events.find({"event_name": {"$regex": query, "$options": 'i'}})  # Basic text search
+    return render_template('search.html', events=search_results, query=query)
+
+@app.route('/watchlist')
+def watchlist():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+
+    id = str(session.get("id"))
+
+    print(id)
+
+
+
+    watchlist = users.find_one({"_id": ObjectId(id)}).get("watchlist")
+    watchlisted_events = []
+    if watchlist is None:
+        watchlisted_events = ["No events in watchlist"]
+    else:
+        for event in watchlist:
+            result = events.find_one({"_id": ObjectId(event)})
+            if result:
+                watchlisted_events.append(result)
+    return render_template('watchlist.html', events=watchlisted_events)
+
+@app.route('/watchlist_edit', methods=['POST'])
+def watchlist_edit():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+
+    id = session.get("id")
+
+    watchlist = users.find_one({"_id": ObjectId(id)}).get("watchlist")
+    watchlisted_events = []
+    if watchlist is None:
+        watchlisted_events = ["No events in watchlist"]
+    else:
+        for event in watchlist:
+            result = events.find_one({"_id": ObjectId(event)})
+            if result:
+                watchlisted_events.append(result)
+    return render_template('watchlist_edit.html', events=watchlisted_events)
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+    event_id = request.form.get('event_id')
+    if event_id:
+        users.update_one({"_id": ObjectId(session.get("id"))}, {"$pull": {"watchlist": ObjectId(event_id)}})
+        return redirect(url_for('watchlist'))
+    else:
+        return "Error deleting from watchlist", 400
+
+@app.route('/delete_all', methods=['POST'])
+def delete_all():  
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+    users.update_one({"_id": ObjectId(session.get("id"))}, {"$set": {"watchlist": []}})
+    return redirect(url_for('watchlist'))
+
+@app.route('/settings', methods=['GET'])
+def settings():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+
+    return render_template('settings.html')
+
+@app.route('/settings_save', methods=['POST'])
+def settings_save():
+    if not session.get("logged_in"):
+        return redirect(url_for("login")) 
+      
+    email = request.form.get('email')  
+    password = request.form.get('password') 
+    phone = request.form.get('phone')
+    # TODO: update database
+
+    return redirect(url_for('settings'))
+
+
+@app.route('/event/<event_id>, methods=["GET"]')
+def event_page(event_id):
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+    event = events.find_one({"_id": ObjectId(event_id)})
+    if event:
+        return render_template('event.html', event=event)
+    else:
+        return "Event not found", 404
+
+@app.route('/add_to_watchlist', methods=['POST'])
+def add_to_watchlist():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+    event_id = request.form.get('event_id')
+
+    # TODO: update database
+    price_drop = request.form.get('price')
+    inventory_drop = request.form.get('inventory')
+    restock_to = request.form.get('restock')
+
+    
+    if event_id:
+        if users.find_one({"_id": ObjectId(session.get("id")), "watchlist": ObjectId(event_id)}):
+            return redirect(url_for('watchlist'))
+        else:
+            users.update_one({"_id": ObjectId(session.get("id"))}, {"$push": {"watchlist": ObjectId(event_id)}})
+        return redirect(url_for('watchlist'))
+    else:
+        return "Error adding to watchlist", 400
+
+@app.route('/notification', methods=["GET"])
+def notification():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+    
+    id = session.get("id")
+
+    messages = users.find_one({"_id": ObjectId(id)}).get("notifications")
+
+    if messages == []:
+        messages.append("No messages")
+    print(messages)
+
+    return render_template("notification.html", messages = messages)
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 
 # @app.route('/generate-data')
@@ -91,5 +246,5 @@ def home():
 
 if __name__ == '__main__':
     # Print MongoDB server information to check connection
-    print(client.server_info())
+    # print(client.server_info())
     app.run(debug=True)

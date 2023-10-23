@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Page</title>
+    <link rel="stylesheet" href="static/css/notification.css">
+</head>
+<body>
+    <div class="notification-container">
+        <button class="back-button">Back</button>
+        {% for message in messages %}
+        <div class="notification">
+            {{message}}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="navbar">
+        <form action="/home" method="get">
+            <button class="nav-button">Home</button>
+        </form>
+        <form action="/search" method="get">
+            <button class="nav-button">Search</button>
+        </form>
+        <form action="/watchlist" method="get">
+            <button class="nav-button">Watch List</button>
+        </form>
+        <form action="/settings" method="get">
+            <button class="nav-button">Settings</button>
+        </form>
+    </div>
+    <script>
+        document.querySelector('.back-button').addEventListener('click', function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
+

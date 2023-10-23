@@ -11,8 +11,11 @@
 <body>
     <div class="watchlist-page">
         <div class="header">
-            <form action="/watchlist_edit" method="post">
-                <button>Edit</button>
+            <form action="/watchlist" method="get">
+                <button>Done</button>
+            </form>
+            <form action="/delete_all" method="post">
+                <button>Delete All</button>
             </form>
         </div>
 
@@ -21,7 +24,7 @@
             <div class="event-image">
                 <img src="static/placeholder.png" alt="Event Image" class="event-image">
             </div>
-            <a href="{{ url_for('event_page', event_id=event._id) }}">{{event.event_name}}</a>
+            <a>{{event.event_name}}</a>
             <p>{{event.date}}</p>
             <p>{{event.venue}}</p>
 
@@ -30,6 +33,11 @@
                 <button>Inventory Alert</button>
                 <button>Re-stock Alert</button>
             </div>
+
+            <form action="/delete" method="post">
+                <input type="hidden" name="event_id" value="{{event._id}}">
+                <button>Delete</button>
+            </form>
         </div>
         {% endfor %}
 

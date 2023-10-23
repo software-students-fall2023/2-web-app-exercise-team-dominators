@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.event-container {
+    padding: 20px;
+}
+
+.back-button, .buy-button, .watch-button {
+    display: block;
+    background-color: #eee;
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.buy-button:hover, .watch-button:hover {
+    background-color: #ddd;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.notification-settings label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-button {
+    padding: 15px 0;
+    flex: 1;
+    text-align: center;
+    background-color: #333;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: #555;
+}

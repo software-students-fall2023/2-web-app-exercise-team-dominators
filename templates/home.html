@@ -9,7 +9,9 @@
 <body>
     <div class="header">
         <div class="logo">LOGO</div>
-        <div class="notification">Notification</div>
+        <form action="/notification" method="get">
+            <button class="notification-button">Notification</button>
+        </form>
     </div>
     <div class="featured-event">
         Featured Event
@@ -17,14 +19,25 @@
     </div>
     <div class="events-grid">
         {% for event in featured_events%}
-        <div class="event">{{event.event_name}}</div>
+        <div class="event">
+            <a href="{{ url_for('event_page', event_id=event._id) }}">{{event.event_name}}</a>
+        </div>
+
         {% endfor %}
     </div>
     <div class="navbar">
-        <div>Home</div>
-        <div>Search</div>
-        <div>Watch List</div>
-        <div>Settings</div>
+        <form action="/home" method="get">
+            <button class="nav-button">Home</button>
+        </form>
+        <form action="/search" method="get">
+            <button class="nav-button">Search</button>
+        </form>
+        <form action="/watchlist" method="get">
+            <button class="nav-button">Watch List</button>
+        </form>
+        <form action="/settings" method="get">
+            <button class="nav-button">Settings</button>
+        </form>
     </div>
 </body>
 </html>

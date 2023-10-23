@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <link rel="stylesheet" href="static/css/search.css">
+</head>
+
+<body>
+    <div class="search-page">
+        
+        <form class="search-bar" method="post">
+            <input type="text" name="query" placeholder="Search..." value="{{ query|default('') }}">
+            <input type="submit" value="Search"> 
+        </form>
+
+        {% for event in events %}
+        <div class="event">
+            <!-- assuming event-image is a URL. If it's binary image data, you'll need to handle it appropriately -->
+            <div class="event-image"> 
+                <img src="static/placeholder.png" alt="Event Image" class="event-image"> 
+            </div>
+            <a href="{{ url_for('event_page', event_id=event._id) }}">{{event.event_name}}</a>
+            <p>{{ event.event_date }}</p> 
+            <p>{{ event.venue }}</p> 
+        </div>
+        {% endfor %}
+
+        <div class="nav-bar">
+            <form action="/home" method="get">
+                <button class="nav-button">Home</button>
+            </form>
+            <form action="/search" method="get">
+                <button class="nav-button">Search</button>
+            </form>
+            <form action="/watchlist" method="get">
+                <button class="nav-button">Watch List</button>
+            </form>
+            <form action="/settings" method="get">
+                <button class="nav-button">Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
