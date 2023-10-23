@@ -15,11 +15,22 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
 }
 
 .event {
     border-bottom: 1px solid #e0e0e0;
     padding: 15px 0;
+}
+
+.event a {
+    color: #2c2c2c;
+    text-decoration: none;
+}
+
+.event a:visited {
+    color: #2c2c2c;
 }
 
 .event-image {
@@ -32,19 +43,29 @@ body {
 .event-name {
     font-weight: bold;
     margin-bottom: 5px;
+    font-size: 1.2em;
 }
 
 .alerts {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .alerts button {
     background-color: #f4f4f4;
-    padding: 5px 10px;
-    border: none;
+    padding: 7px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
     cursor: pointer;
+    flex: 1;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.alerts button:last-child {
+    margin-right: 0;
 }
 
 .alerts button:hover {
@@ -62,6 +83,14 @@ body {
     padding: 10px 15px;
     border: none;
     cursor: pointer;
+    flex: 1;
+    margin-right: 5px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.nav-bar button:last-child {
+    margin-right: 0;
 }
 
 .nav-bar button:hover {
