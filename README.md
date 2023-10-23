@@ -13,3 +13,4 @@ To develop a user-friendly and efficient event ticket tracker that offers real-t
 ## Task boards
 
 [Link to Sprint 1](https://github.com/orgs/software-students-fall2023/projects/6)
+[Meetings](https://docs.google.com/document/d/114rBlqlLAI8gh3qC9gGgjGsPDPorCrgCo4xRm_N32e4/edit)
