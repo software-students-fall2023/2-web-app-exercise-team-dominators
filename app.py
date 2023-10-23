@@ -90,8 +90,6 @@ def watchlist():
 
     print(id)
 
-
-
     watchlist = users.find_one({"_id": ObjectId(id)}).get("watchlist")
     watchlisted_events = []
     if watchlist is None:
@@ -146,15 +144,61 @@ def settings():
 
     return render_template('settings.html')
 
+
 @app.route('/settings_save', methods=['POST'])
 def settings_save():
-    if not session.get("logged_in"):
-        return redirect(url_for("login"))
-
+    # Access form data
     email = request.form.get('email')
     password = request.form.get('password')
     phone = request.form.get('phone')
-    # TODO: update database
+    notify_email = True if request.form.get('notify_email') else False
+    notify_phone = True if request.form.get('notify_phone') else False
+    notify_app = True if request.form.get('notify_app') else False
+    notification_mode = request.form.get('notification')
+    #contact_us_message = request.form.get('contact_us')
+
+    # Debugging: print form data to the console
+    print(f"Email: {email}")
+    print(f"Password: {password}")
+    print(f"Phone: {phone}")
+    print(f"Notify Email: {notify_email}")
+    print(f"Notify Phone: {notify_phone}")
+    print(f"Notify App: {notify_app}")
+    print(f"Notification Mode: {notification}")
+   
+
+    # Update user's data in the database using the form data
+
+    # Assuming you are storing the logged-in user's ID in the session
+    user_id = session.get('id')
+
+    if not user_id:
+        # Handle the error where there's no user ID in the session.
+        # Maybe redirect them to the login page?
+        return redirect(url_for('login'))
+
+    updates = {}
+
+    if email:
+        updates["email"] = email
+    if password:
+        updates["password_hash"] = password
+    if phone:
+        updates["phone"] = phone
+    if notification_mode:
+        updates["notification_mode"] = notification_mode
+
+    # Update the notifications array
+    updates["notifications"] = []
+    if notify_email:
+        updates["notifications"].append("email")
+    if notify_phone:
+        updates["notifications"].append("phone")
+    if notify_app:
+        updates["notifications"].append("app")
+
+    # Update the database
+    db.USer.update_one({"_id": ObjectId(user_id)}, {"$set": updates})
 
     return redirect(url_for('settings'))
 
