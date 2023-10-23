@@ -1,4 +1,4 @@
-# Web Application Exercise
+i# Web Application Exercise
 
 A little exercise to build a web application following an agile process.
 
