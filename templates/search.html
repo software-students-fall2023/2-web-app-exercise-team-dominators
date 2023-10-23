@@ -19,8 +19,10 @@
 </div>
     <div class="search-page">
         <form class="search-bar" method="post">
-            <input type="text" name="query" placeholder="Search..." value="{{ query|default('') }}">
-            <input type="submit" value="Search">
+            <div class="input-wrapper">
+                <input type="text" name="query" placeholder="Search..." value="{{ query|default('') }}">
+                <input type="submit" value="Search">
+            </div>
         </form>
 
         {% for event in events %}
