@@ -1,52 +1,71 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #333;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #fff;
+    color: #333;
 }
 
 .container {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 320px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: #333;
 }
 
 h1 {
     text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .logo {
-    background-color: #ddd;
+    background-color: #e0e0e0;
     text-align: center;
-    padding: 40px 0;
+    padding: 20px 0;
     margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+form input[type="email"],
+form input[type="password"],
+form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: block;
+    box-sizing: border-box;
 }
 
 form input[type="email"],
 form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    color: #333;
 }
 
 form input[type="submit"] {
-    background-color: #333;
+    background-color: #28a745;
     color: #fff;
     border: none;
-    padding: 10px 15px;
     cursor: pointer;
-    border-radius: 5px;
-    display: block;
-    width: 100%;
+    transition: background-color 0.3s;
 }
 
 form input[type="submit"]:hover {
-    background-color: #555;
+    background-color: #218838;
 }
+
+@media (min-width: 600px) {
+    body {
+        background-color: #333;
+    }
+}
+
+
