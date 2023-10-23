@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile App Home Page</title>
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">LOGO</div>
+        <div class="notification">Notification</div>
+    </div>
+    <div class="featured-event">
+        Featured Event
+        <p>Descriptions</p>
+    </div>
+    <div class="events-grid">
+        {% for event in featured_events%}
+        <div class="event">{{event.event_name}}</div>
+        {% endfor %}
+    </div>
+    <div class="navbar">
+        <div>Home</div>
+        <div>Search</div>
+        <div>Watch List</div>
+        <div>Settings</div>
+    </div>
+</body>
+</html>
